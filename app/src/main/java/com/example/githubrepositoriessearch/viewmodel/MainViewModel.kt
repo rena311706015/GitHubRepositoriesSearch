@@ -1,5 +1,6 @@
 package com.example.githubrepositoriessearch.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,20 +12,21 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
-    private var repoLiveData = MutableLiveData<List<Repository>>()
+    val repoLiveData = MutableLiveData<List<Repository>>()
+    val selected: MutableLiveData<Repository> = MutableLiveData()
 
-    var selected: MutableLiveData<Repository> = MutableLiveData()
+    val openItemEvent: MutableLiveData<Event<Repository>> = MutableLiveData()
 
-    var openItemEvent: MutableLiveData<Event<Repository>> = MutableLiveData()
+    fun getSearchResult(text: String) {
+        viewModelScope.launch(IO) {
 
-    fun getSearchResult() {
-        viewModelScope.launch(IO){
-            val result = RetrofitInstance.api.getRepositories("MVVM")
+            Log.e("VM", "getSearchResult()")
+            val result = RetrofitInstance.api.getRepositories(text)
             repoLiveData.postValue(result.body()?.items)
         }
     }
 
-    fun observeRepoLiveData() : LiveData<List<Repository>> {
+    fun observeRepoLiveData(): LiveData<List<Repository>> {
         return repoLiveData
     }
 

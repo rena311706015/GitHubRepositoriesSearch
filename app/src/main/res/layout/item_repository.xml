@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="15dp"
         app:cardElevation="5dp"
-        app:rippleColor="@color/md_theme_light_primary"
+        app:rippleColor="@color/md_theme_light_outline"
         app:cardUseCompatPadding="true"
         app:cardBackgroundColor="@color/md_theme_light_onPrimary"
         app:strokeColor="@color/md_theme_light_onPrimary">

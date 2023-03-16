@@ -1,8 +1,6 @@
 package com.example.githubrepositoriessearch.model
 
 import java.text.DecimalFormat
-import java.text.SimpleDateFormat
-import java.util.*
 
 class Repository(
     val id: Int,
@@ -27,10 +25,10 @@ class Repository(
     }
     //TODO Correctly transfer "2022-12-30T17:58:47Z" -> Updated on Dec 30,2022
     fun getUpdateAt(): String {
-        val outputFormat = SimpleDateFormat("MMM d, y")
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
-        val date = inputFormat.parse(updated_at);
-        return "Updated on "+outputFormat.format(date)
+//        val outputFormat = SimpleDateFormat("MMM d, y")
+//        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
+//        val date = inputFormat.parse(updated_at);
+//        return "Updated on "+outputFormat.format(date)
         return "Updated on $updated_at"
     }
 }

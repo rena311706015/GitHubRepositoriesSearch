@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.githubrepositoriessearch.R
 import com.example.githubrepositoriessearch.databinding.FragmentRepoDetailBinding
-import com.example.githubrepositoriessearch.databinding.FragmentRepoSearchBinding
 import com.example.githubrepositoriessearch.viewmodel.MainViewModel
 
 class RepoDetailFragment : Fragment() {
@@ -17,7 +16,7 @@ class RepoDetailFragment : Fragment() {
         fun newInstance() =
             RepoDetailFragment()
     }
-    private var binding: FragmentRepoSearchBinding? = null
+    private var binding: FragmentRepoDetailBinding? = null
     private val sharedViewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -35,9 +34,9 @@ class RepoDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding?.apply {
-            binding = FragmentRepoSearchBinding.inflate(layoutInflater)
+            binding = FragmentRepoDetailBinding.inflate(layoutInflater)
             binding?.viewModel = sharedViewModel
-            viewModel?.getSearchResult()
+            viewModel?.getSearchResult("test")
 
         }
     }
