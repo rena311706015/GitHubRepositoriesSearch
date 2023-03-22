@@ -5,11 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.githubrepositoriessearch.R
 import com.example.githubrepositoriessearch.adpter.RepositoriesAdapter
 import com.example.githubrepositoriessearch.databinding.FragmentRepoSearchBinding
 import com.example.githubrepositoriessearch.model.Repository
@@ -35,28 +39,22 @@ class RepoSearchFragment  : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
             binding?.viewModel = sharedViewModel
+//            binding?.searchProgressIndicator?.setProgressCompat(50,true)
             prepareRecyclerView()
             val searchEditText = binding.searchEditText
             searchEditText.doOnTextChanged { text, _, _, _ ->
-                Log.e("onTextChanged", text.toString())
+                binding?.searchProgressIndicator?.bringToFront()
+                binding?.searchProgressIndicator?.show()
+                binding?.searchResult?.isVisible = false
                 viewModel?.getSearchResult(text.toString())
-//                viewModel?.openItemEvent?.observe(viewLifecycleOwner) { event ->
-//                    event.getContentIfNotHandled()?.let {
-//                        requireActivity().supportFragmentManager
-//                            .beginTransaction()
-//                            .replace(
-//                                com.google.android.material.R.id.container,
-//                                RepoDetailFragment.newInstance()
-//                            )
-//                            .addToBackStack(null)
-//                            .commit()
-//                    }
-//                }
-                viewModel?.repoLiveData?.observe(viewLifecycleOwner) { list ->
-                    Log.e("repolivedata","observe()")
-                    repoList = list
-//                    repoAdapter.setRepoList(repoList)
-                    repoAdapter.submitList(repoList)
+                viewModel?.repoListLiveData?.observe(viewLifecycleOwner) { list ->
+                    //TODO 重載完要回到第一項
+                    if(repoList != list){
+                        repoList = list
+                        repoAdapter.submitList(repoList)
+                        binding?.searchProgressIndicator?.hide()
+                        binding?.searchResult?.isVisible = true
+                    }
                 }
             }
         }
@@ -66,7 +64,10 @@ class RepoSearchFragment  : Fragment() {
 
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         repoList = emptyList()
-        repoAdapter = RepositoriesAdapter()
+        repoAdapter = RepositoriesAdapter(RepositoriesAdapter.OnClickListener { repo ->
+            val bundle = bundleOf("repo" to (repo.owner.login).plus(" ").plus(repo.name))
+            view?.findNavController()?.navigate(R.id.action_repoSearchFragment_to_repoDetailFragment,bundle)
+        })
 
         binding?.lifecycleOwner = this
         binding?.searchResult?.layoutManager = layoutManager

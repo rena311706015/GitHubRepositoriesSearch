@@ -6,10 +6,12 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.githubrepositoriessearch.databinding.ItemRepositoryBinding
 import com.example.githubrepositoriessearch.model.Repository
+import com.makeramen.roundedimageview.RoundedImageView
 
-class RepositoriesAdapter: ListAdapter<Repository, RecyclerView.ViewHolder>(DiffCallback()) {
+class RepositoriesAdapter(private val onClickListener: OnClickListener): ListAdapter<Repository, RecyclerView.ViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =
             ItemRepositoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,6 +23,9 @@ class RepositoriesAdapter: ListAdapter<Repository, RecyclerView.ViewHolder>(Diff
         when (holder) {
             is ViewHolder -> {
                 holder.bind(getItem(position))
+                holder.itemView.setOnClickListener {
+                    onClickListener.onClick(getItem(position))
+                }
             }
         }
     }
@@ -31,12 +36,14 @@ class RepositoriesAdapter: ListAdapter<Repository, RecyclerView.ViewHolder>(Diff
             binding.repository = item
         }
     }
-
-
     override fun getItemCount(): Int {
         return currentList.size
     }
+    class OnClickListener(val clickListener: (repo: Repository) -> Unit) {
+        fun onClick(repo: Repository) = clickListener(repo)
+    }
 }
+
 @BindingAdapter("repositories")
 fun bindRecyclerViewWithDataItemList(
     recyclerView: RecyclerView,
@@ -50,6 +57,8 @@ fun bindRecyclerViewWithDataItemList(
         }
     }
 }
+
+
 private class DiffCallback : DiffUtil.ItemCallback<Repository>() {
     override fun areContentsTheSame(oldItem: Repository, newItem: Repository) =
         oldItem.equals(newItem)
@@ -57,3 +66,4 @@ private class DiffCallback : DiffUtil.ItemCallback<Repository>() {
     override fun areItemsTheSame(oldItem: Repository, newItem: Repository) =
         oldItem.id == newItem.id
 }
+

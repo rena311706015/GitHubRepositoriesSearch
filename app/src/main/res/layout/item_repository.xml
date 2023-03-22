@@ -19,7 +19,8 @@
         app:rippleColor="@color/md_theme_light_outline"
         app:cardUseCompatPadding="true"
         app:cardBackgroundColor="@color/md_theme_light_onPrimary"
-        app:strokeColor="@color/md_theme_light_onPrimary">
+        app:strokeColor="@color/md_theme_light_onPrimary"
+        android:focusable="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -27,15 +28,15 @@
             android:padding="10dp"
             tools:context=".ui.main.MainActivity">
 
-            <ImageView
-                android:id="@+id/icon_repo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/baseline_book_24"
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/repo_owner_avatar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:imageUrl="@{repository.owner.avatar_url}"
+                app:riv_corner_radius="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-            <!--            android:text="@{repository.full_name}"-->
             <TextView
                 android:id="@+id/repo_full_name"
                 android:layout_width="0dp"
@@ -44,9 +45,8 @@
                 android:text="@{repository.full_name}"
                 android:textSize="20sp"
                 android:textColor="@color/md_theme_light_primary"
-                app:layout_constraintStart_toEndOf="@id/icon_repo"
-                app:layout_constraintTop_toTopOf="@id/icon_repo"
-                app:layout_constraintBottom_toBottomOf="@id/icon_repo"/>
+                app:layout_constraintStart_toEndOf="@id/repo_owner_avatar"
+                app:layout_constraintTop_toTopOf="@id/repo_owner_avatar"/>
 
             <TextView
                 android:id="@+id/repo_description"
@@ -56,7 +56,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:text="@{repository.description}"
                 android:textSize="20sp"
-                app:layout_constraintStart_toEndOf="@id/icon_repo"
+                app:layout_constraintStart_toEndOf="@id/repo_owner_avatar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/repo_full_name" />
 
@@ -67,7 +67,7 @@
                 android:layout_marginVertical="10dp"
                 android:layout_marginHorizontal="10dp"
                 android:background="@drawable/round_star_outline_24"
-                app:layout_constraintStart_toEndOf="@id/icon_repo"
+                app:layout_constraintStart_toEndOf="@id/repo_owner_avatar"
                 app:layout_constraintTop_toBottomOf="@id/repo_description" />
 
             <TextView
@@ -98,7 +98,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:text="@{repository.getUpdateAt()}"
                 android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@id/icon_repo"
+                app:layout_constraintStart_toEndOf="@id/repo_owner_avatar"
                 app:layout_constraintTop_toBottomOf="@id/icon_star"/>
 
             <androidx.constraintlayout.widget.Guideline
