@@ -9,7 +9,7 @@
             type="com.example.githubrepositoriessearch.viewmodel.MainViewModel" />
         <variable
             name="adapter"
-            type="com.example.githubrepositoriessearch.adpter.RepositoriesAdapter" />
+            type="com.example.githubrepositoriessearch.adapter.RepositoriesAdapter" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

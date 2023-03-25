@@ -1,4 +1,4 @@
-package com.example.githubrepositoriessearch.adpter
+package com.example.githubrepositoriessearch.adapter
 
 open class Event<out T>(private val content: T) {
 

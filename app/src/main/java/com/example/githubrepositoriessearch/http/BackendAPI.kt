@@ -1,5 +1,6 @@
 package com.example.githubrepositoriessearch.http
 
+import com.example.githubrepositoriessearch.model.Readme
 import com.example.githubrepositoriessearch.model.Repository
 import com.example.githubrepositoriessearch.model.Results
 import retrofit2.Response
@@ -14,5 +15,6 @@ interface BackendAPI {
     @GET("/repos/{owner}/{repo}")
     suspend fun getRepository(@Path("owner") o: String, @Path("repo") r: String): Response<Repository>
 
-
+    @GET("/repos/{owner}/{repo}/readme")
+    suspend fun getREADME(@Path("owner") o: String, @Path("repo") r: String): Response<Readme>
 }

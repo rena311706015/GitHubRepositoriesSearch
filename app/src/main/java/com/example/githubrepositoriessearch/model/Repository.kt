@@ -1,20 +1,31 @@
 package com.example.githubrepositoriessearch.model
 
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Repository(
-    val id: Int,
-    val full_name: String,
-    val name: String,
-    val owner: Owner,
-    private val updated_at: String,
-    val description: String,
-    val language: String,
-    private val stargazers_count: Int,
-)
-{
+class Repository (
+    val id: Int = 0,
+    val full_name: String = "",
+    val name: String = "",
+    val description: String = "",
+    val language: String = "",
+    val owner: Owner = Owner(),
+    private val updated_at: String = "",
+    private val stargazers_count: Int = 0,
+
+    val has_issues : Boolean,
+    val has_projects : Boolean,
+    val has_discussions : Boolean,
+    val issues_url : String,
+    val pulls_url : String,
+    val releases_url : String,
+    val contributors_url : String,
+
+){
+
     fun getStar(): String {
         return if( stargazers_count >= 1000){
             val df = DecimalFormat("#.#")

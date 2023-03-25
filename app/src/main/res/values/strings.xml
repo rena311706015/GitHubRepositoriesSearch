@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">GitHubRepositoriesSearch</string>
     <string name="search_hint">請輸入Repository關鍵字...</string>
-
-
+    <string name="repo_branch">Branch</string>
+    <string name="repo_browse_code">Browse Code</string>
+    <string name="repo_commits">Commits</string>
+    <string name="repo_pull_requests">Pull Requests</string>
+    <string name="repo_releases">Releases</string>
+    <string name="repo_contributors">Contributors</string>
+    <string name="repo_watchers">Watchers</string>
+    <string name="repo_issues">Issues</string>
+    <string name="repo_projects">Projects</string>
+    <string name="repo_discussions">Discussions</string>
 
     <!--for test-->
     <string name="test_repo_full_name">knockout/knockout</string>

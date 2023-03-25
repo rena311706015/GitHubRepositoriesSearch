@@ -1,7 +1,6 @@
 package com.example.githubrepositoriessearch.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +12,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.example.githubrepositoriessearch.R
-import com.example.githubrepositoriessearch.adpter.RepositoriesAdapter
+import com.example.githubrepositoriessearch.adapter.RepositoriesAdapter
 import com.example.githubrepositoriessearch.databinding.FragmentRepoSearchBinding
 import com.example.githubrepositoriessearch.model.Repository
 import com.example.githubrepositoriessearch.viewmodel.MainViewModel
-
 class RepoSearchFragment  : Fragment() {
     private var _binding: FragmentRepoSearchBinding? = null
     private val binding get() = _binding!!
@@ -46,10 +45,17 @@ class RepoSearchFragment  : Fragment() {
                 binding?.searchProgressIndicator?.bringToFront()
                 binding?.searchProgressIndicator?.show()
                 binding?.searchResult?.isVisible = false
+                //always back to the first item after list items update
+                //TODO 連續打字會觸發過多次的刷新
+                repoAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
+                    override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                        super.onItemRangeInserted(positionStart, itemCount)
+                        binding?.searchResult?.scrollToPosition(0)
+                    }
+                })
                 viewModel?.getSearchResult(text.toString())
                 viewModel?.repoListLiveData?.observe(viewLifecycleOwner) { list ->
-                    //TODO 重載完要回到第一項
-                    if(repoList != list){
+                    if(repoList != list && !list.isNullOrEmpty()){
                         repoList = list
                         repoAdapter.submitList(repoList)
                         binding?.searchProgressIndicator?.hide()

@@ -1,4 +1,4 @@
-package com.example.githubrepositoriessearch.adpter
+package com.example.githubrepositoriessearch.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,10 +6,8 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.githubrepositoriessearch.databinding.ItemRepositoryBinding
 import com.example.githubrepositoriessearch.model.Repository
-import com.makeramen.roundedimageview.RoundedImageView
 
 class RepositoriesAdapter(private val onClickListener: OnClickListener): ListAdapter<Repository, RecyclerView.ViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

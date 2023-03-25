@@ -7,8 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
-import com.example.githubrepositoriessearch.adpter.Event
+import com.example.githubrepositoriessearch.adapter.Event
 import com.example.githubrepositoriessearch.http.RetrofitInstance
+import com.example.githubrepositoriessearch.model.Readme
 import com.example.githubrepositoriessearch.model.Repository
 import com.makeramen.roundedimageview.RoundedImageView
 import kotlinx.coroutines.Dispatchers.IO
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 class MainViewModel : ViewModel() {
     val repoListLiveData = MutableLiveData<List<Repository>>()
     val repoLiveData = MutableLiveData<Repository>()
+    val repoReadmeLiveData = MutableLiveData<Readme>()
     val selected: MutableLiveData<Repository> = MutableLiveData()
     val openItemEvent: MutableLiveData<Event<Repository>> = MutableLiveData()
 
@@ -29,17 +31,17 @@ class MainViewModel : ViewModel() {
     fun observeRepoListLiveData(): LiveData<List<Repository>> {
         return repoListLiveData
     }
-
     fun getRepository(owner:String, repo:String){
         viewModelScope.launch(IO){
-            Log.e("VM", "getRepository")
             val result = RetrofitInstance.api.getRepository(owner, repo)
             repoLiveData.postValue(result.body())
         }
     }
-
-    fun observeRepoLiveData(): LiveData<Repository>{
-        return repoLiveData
+    fun getReadme(owner:String, repo:String){
+        viewModelScope.launch(IO){
+            val result = RetrofitInstance.api.getREADME(owner, repo)
+            repoReadmeLiveData.postValue(result.body())
+        }
     }
     fun openItem(item: Repository) {
         selected.value = item
