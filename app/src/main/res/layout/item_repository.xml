@@ -5,9 +5,6 @@
         <variable
             name="repository"
             type="com.example.githubrepositoriessearch.model.Repository" />
-        <variable
-            name="viewModel"
-            type="com.example.githubrepositoriessearch.viewmodel.MainViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -56,6 +53,8 @@
                 android:layout_marginHorizontal="10dp"
                 android:text="@{repository.description}"
                 android:textSize="20sp"
+                android:maxLines="3"
+                android:ellipsize="end"
                 app:layout_constraintStart_toEndOf="@id/repo_owner_avatar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/repo_full_name" />
@@ -66,7 +65,7 @@
                 android:layout_height="24dp"
                 android:layout_marginVertical="10dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="@drawable/round_star_outline_24"
+                android:background="@drawable/round_star"
                 app:layout_constraintStart_toEndOf="@id/repo_owner_avatar"
                 app:layout_constraintTop_toBottomOf="@id/repo_description" />
 

@@ -6,14 +6,14 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.githubrepositoriessearch.databinding.ItemRepositoryBinding
-import com.example.githubrepositoriessearch.model.Repository
+import com.example.githubrepositoriessearch.databinding.ItemContentBinding
+import com.example.githubrepositoriessearch.model.Content
 
-class RepositoriesAdapter(private val onClickListener: OnClickListener) :
-    ListAdapter<Repository, RecyclerView.ViewHolder>(RepoDiffCallback()) {
+class ContentsAdapter(private val onClickListener: OnClickListener) :
+    ListAdapter<Content, RecyclerView.ViewHolder>(ContentDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =
-            ItemRepositoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemContentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return ViewHolder(binding)
     }
@@ -29,10 +29,10 @@ class RepositoriesAdapter(private val onClickListener: OnClickListener) :
         }
     }
 
-    class ViewHolder constructor(private val binding: ItemRepositoryBinding) :
+    class ViewHolder constructor(private val binding: ItemContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Repository) {
-            binding.repository = item
+        fun bind(item: Content) {
+            binding.content = item
         }
     }
 
@@ -40,31 +40,30 @@ class RepositoriesAdapter(private val onClickListener: OnClickListener) :
         return currentList.size
     }
 
-    class OnClickListener(val clickListener: (repo: Repository) -> Unit) {
-        fun onClick(repo: Repository) = clickListener(repo)
+    class OnClickListener(val clickListener: (content: Content) -> Unit) {
+        fun onClick(content: Content) = clickListener(content)
     }
 }
 
-@BindingAdapter("repositories")
+@BindingAdapter("contents")
 fun bindRecyclerViewWithDataItemList(
     recyclerView: RecyclerView,
-    dataItemList: List<Repository>?
+    dataItemList: List<Content>?
 ) {
     dataItemList?.let {
         recyclerView.adapter?.apply {
             when (this) {
-                is RepositoriesAdapter -> submitList(it)
+                is ContentsAdapter -> submitList(it.sortedBy { it.type })
             }
         }
     }
 }
 
 
-private class RepoDiffCallback : DiffUtil.ItemCallback<Repository>() {
-    override fun areContentsTheSame(oldItem: Repository, newItem: Repository) =
+private class ContentDiffCallback : DiffUtil.ItemCallback<Content>() {
+    override fun areContentsTheSame(oldItem: Content, newItem: Content) =
         oldItem.equals(newItem)
 
-    override fun areItemsTheSame(oldItem: Repository, newItem: Repository) =
-        oldItem.id == newItem.id
+    override fun areItemsTheSame(oldItem: Content, newItem: Content) =
+        oldItem.name == newItem.name
 }
-

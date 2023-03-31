@@ -6,14 +6,14 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.githubrepositoriessearch.databinding.ItemRepositoryBinding
-import com.example.githubrepositoriessearch.model.Repository
+import com.example.githubrepositoriessearch.databinding.ItemCommitBinding
+import com.example.githubrepositoriessearch.model.CommitResult
 
-class RepositoriesAdapter(private val onClickListener: OnClickListener) :
-    ListAdapter<Repository, RecyclerView.ViewHolder>(RepoDiffCallback()) {
+class CommitsAdapter(private val onClickListener: OnClickListener) :
+    ListAdapter<CommitResult, RecyclerView.ViewHolder>(CommitDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding =
-            ItemRepositoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemCommitBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return ViewHolder(binding)
     }
@@ -29,10 +29,10 @@ class RepositoriesAdapter(private val onClickListener: OnClickListener) :
         }
     }
 
-    class ViewHolder constructor(private val binding: ItemRepositoryBinding) :
+    class ViewHolder constructor(private val binding: ItemCommitBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Repository) {
-            binding.repository = item
+        fun bind(item: CommitResult) {
+            binding.commit = item
         }
     }
 
@@ -40,31 +40,30 @@ class RepositoriesAdapter(private val onClickListener: OnClickListener) :
         return currentList.size
     }
 
-    class OnClickListener(val clickListener: (repo: Repository) -> Unit) {
-        fun onClick(repo: Repository) = clickListener(repo)
+    class OnClickListener(val clickListener: (commit: CommitResult) -> Unit) {
+        fun onClick(commit: CommitResult) = clickListener(commit)
     }
 }
 
-@BindingAdapter("repositories")
+@BindingAdapter("commits")
 fun bindRecyclerViewWithDataItemList(
     recyclerView: RecyclerView,
-    dataItemList: List<Repository>?
+    dataItemList: List<CommitResult>?
 ) {
     dataItemList?.let {
         recyclerView.adapter?.apply {
             when (this) {
-                is RepositoriesAdapter -> submitList(it)
+                is CommitsAdapter -> submitList(it)
             }
         }
     }
 }
 
 
-private class RepoDiffCallback : DiffUtil.ItemCallback<Repository>() {
-    override fun areContentsTheSame(oldItem: Repository, newItem: Repository) =
+private class CommitDiffCallback : DiffUtil.ItemCallback<CommitResult>() {
+    override fun areContentsTheSame(oldItem: CommitResult, newItem: CommitResult) =
         oldItem.equals(newItem)
 
-    override fun areItemsTheSame(oldItem: Repository, newItem: Repository) =
-        oldItem.id == newItem.id
+    override fun areItemsTheSame(oldItem: CommitResult, newItem: CommitResult) =
+        oldItem.commit == newItem.commit
 }
-

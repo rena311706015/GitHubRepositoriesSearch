@@ -11,6 +11,10 @@
     <string name="repo_issues">Issues</string>
     <string name="repo_projects">Projects</string>
     <string name="repo_discussions">Discussions</string>
+    <string name="choose_branch">Choose Branch</string>
+    <string name="commits">Commits</string>
+    <string name="contents">Contents</string>
+    <string name="rate_limit">Rate Limit</string>
 
     <!--for test-->
     <string name="test_repo_full_name">knockout/knockout</string>

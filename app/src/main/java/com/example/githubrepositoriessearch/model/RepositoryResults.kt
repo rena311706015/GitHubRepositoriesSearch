@@ -1,6 +1,6 @@
 package com.example.githubrepositoriessearch.model
 
-class Results(
+class RepositoryResults(
     var total_count: Int,
     var items: List<Repository>
 )

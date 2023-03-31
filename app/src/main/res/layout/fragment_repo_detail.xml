@@ -3,258 +3,178 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".RepoDetailFragment">
+
     <data>
 
         <variable
             name="repo"
             type="com.example.githubrepositoriessearch.model.Repository" />
+
         <variable
             name="viewModel"
             type="com.example.githubrepositoriessearch.viewmodel.MainViewModel" />
     </data>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbarStyle="insideOverlay"
-        android:scrollbars="vertical"
-        android:layout_margin="15dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbars="vertical"
+            android:layout_margin="15dp">
 
-            <Button
-                android:id="@+id/back_button"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/round_arrow_back_24"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/repo_owner_avatar"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginVertical="10dp"
-                app:imageUrl="@{repo.owner.avatar_url}"
-                app:riv_corner_radius="10dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/back_button"/>
-
-            <TextView
-                android:id="@+id/owner_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:text="@{repo.owner.login}"
-                app:layout_constraintBottom_toBottomOf="@id/repo_owner_avatar"
-                app:layout_constraintLeft_toRightOf="@id/repo_owner_avatar"
-                app:layout_constraintTop_toTopOf="@+id/repo_owner_avatar" />
-
-            <TextView
-                android:id="@+id/repo_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:text="@{repo.name}"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/repo_owner_avatar" />
-
-            <TextView
-                android:id="@+id/repo_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:text="@{repo.description}"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/repo_name" />
-
-            <ImageView
-                android:id="@+id/repo_star_icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginVertical="10dp"
-                android:background="@drawable/round_star_outline_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/repo_description" />
-
-            <TextView
-                android:id="@+id/repo_star"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@{repo.getStar()}"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/repo_star_icon"
-                app:layout_constraintLeft_toRightOf="@id/repo_star_icon"
-                app:layout_constraintTop_toTopOf="@id/repo_star_icon" />
-
-            <TextView
-                android:id="@+id/repo_star_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="stars"
-                app:layout_constraintBottom_toBottomOf="@id/repo_star_icon"
-                app:layout_constraintLeft_toRightOf="@id/repo_star"
-                app:layout_constraintTop_toTopOf="@id/repo_star_icon" />
-
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/first_divider"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
-                app:layout_constraintTop_toBottomOf="@id/repo_star_icon"
-                app:layout_constraintLeft_toLeftOf="parent"/>
+                android:layout_height="wrap_content">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_repo_branch"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
-                android:text="@string/repo_branch"
-                app:cornerRadius="5dp"
-                app:strokeColor="@color/md_theme_light_secondary"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/first_divider"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_repo_browse_code"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:text="@string/repo_browse_code"
-                app:cornerRadius="5dp"
-                app:strokeColor="@color/md_theme_light_secondary"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_repo_commits"
-                app:layout_constraintTop_toBottomOf="@id/btn_repo_branch"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/repo_owner_avatar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginVertical="10dp"
+                    app:imageUrl="@{repo.owner.avatar_url}"
+                    app:riv_corner_radius="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_repo_commits"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/repo_commits"
-                app:cornerRadius="5dp"
-                app:strokeColor="@color/md_theme_light_secondary"
-                app:layout_constraintStart_toEndOf="@id/btn_repo_browse_code"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_repo_branch"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                <TextView
+                    android:id="@+id/owner_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="@{repo.owner.login}"
+                    app:layout_constraintBottom_toBottomOf="@id/repo_owner_avatar"
+                    app:layout_constraintLeft_toRightOf="@id/repo_owner_avatar"
+                    app:layout_constraintTop_toTopOf="@+id/repo_owner_avatar" />
 
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/second_divider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
-                app:layout_constraintTop_toBottomOf="@id/btn_repo_browse_code"
-                app:layout_constraintLeft_toLeftOf="parent"/>
+                <TextView
+                    android:id="@+id/repo_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:text="@{repo.name}"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/repo_owner_avatar" />
 
-            <LinearLayout
-                android:id="@+id/repo_actions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/second_divider"
-                app:layout_constraintLeft_toLeftOf="parent">
+                <TextView
+                    android:id="@+id/repo_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:text="@{repo.description}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/repo_name" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_repo_pull_requests"
+                <ImageView
+                    android:id="@+id/repo_star_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/round_star"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/repo_description" />
+
+                <TextView
+                    android:id="@+id/repo_star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@{repo.getStar()}"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/repo_star_icon"
+                    app:layout_constraintLeft_toRightOf="@id/repo_star_icon"
+                    app:layout_constraintTop_toTopOf="@id/repo_star_icon" />
+
+                <TextView
+                    android:id="@+id/repo_star_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="stars"
+                    app:layout_constraintBottom_toBottomOf="@id/repo_star_icon"
+                    app:layout_constraintLeft_toRightOf="@id/repo_star"
+                    app:layout_constraintTop_toTopOf="@id/repo_star_icon" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/first_divider"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/repo_pull_requests"
+                    android:layout_marginVertical="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/repo_star_icon"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_repo_branch"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    app:cornerRadius="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/first_divider"
+                    app:strokeColor="@color/md_theme_light_secondary" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_repo_browse_code"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:text="@string/repo_browse_code"
                     app:cornerRadius="5dp"
                     app:strokeColor="@color/md_theme_light_secondary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_repo_commits"
+                    app:layout_constraintTop_toBottomOf="@id/btn_repo_branch"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_repo_releases"
-                    android:layout_width="match_parent"
+                    android:id="@+id/btn_repo_commits"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/repo_releases"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/repo_commits"
                     app:cornerRadius="5dp"
                     app:strokeColor="@color/md_theme_light_secondary"
+                    app:layout_constraintStart_toEndOf="@id/btn_repo_browse_code"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_repo_branch"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_repo_contributors"
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/second_divider"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/repo_contributors"
-                    app:cornerRadius="5dp"
-                    app:strokeColor="@color/md_theme_light_secondary"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                    android:layout_marginVertical="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/btn_repo_browse_code"
+                    app:layout_constraintLeft_toLeftOf="parent" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_repo_watchers"
+                <TextView
+                    android:id="@+id/repo_readme_filename"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    android:layout_marginHorizontal="5dp"
+                    app:layout_constraintTop_toBottomOf="@id/second_divider"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+                <TextView
+                    android:id="@+id/repo_readme"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/repo_watchers"
-                    app:cornerRadius="5dp"
-                    app:strokeColor="@color/md_theme_light_secondary"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                    android:layout_marginVertical="20dp"
+                    android:layout_marginHorizontal="5dp"
+                    app:layout_constraintTop_toBottomOf="@id/repo_readme_filename"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_repo_issues"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/repo_issues"
-                    android:visibility="gone"
-                    app:cornerRadius="5dp"
-                    app:strokeColor="@color/md_theme_light_secondary"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_repo_projects"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="@string/repo_projects"
-                    app:cornerRadius="5dp"
-                    app:strokeColor="@color/md_theme_light_secondary"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_repo_discussions"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="@string/repo_discussions"
-                    app:cornerRadius="5dp"
-                    app:strokeColor="@color/md_theme_light_secondary"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-            </LinearLayout>
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/third_divider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
-                app:layout_constraintTop_toBottomOf="@id/repo_actions"
-                app:layout_constraintLeft_toLeftOf="parent"/>
-
-            <TextView
-                android:id="@+id/repo_readme_filename"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                app:layout_constraintTop_toBottomOf="@id/third_divider"
-                app:layout_constraintLeft_toLeftOf="parent"/>
-            <TextView
-                android:id="@+id/repo_readme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                app:layout_constraintTop_toBottomOf="@id/repo_readme_filename"
-                app:layout_constraintLeft_toLeftOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
+        </ScrollView>
+    </LinearLayout>
 </layout>

@@ -1,0 +1,33 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="content"
+            type="com.example.githubrepositoriessearch.model.Content"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/content_type"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@{content.isDir ? @drawable/round_folder : @drawable/round_file}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/content_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="@{content.name}"
+            android:textColor="@color/md_theme_light_primary"
+            app:layout_constraintStart_toEndOf="@id/content_type"
+            app:layout_constraintTop_toTopOf="@id/content_type"
+            app:layout_constraintBottom_toBottomOf="@+id/content_type"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

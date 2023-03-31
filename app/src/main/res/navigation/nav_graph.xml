@@ -9,7 +9,17 @@
         android:id="@+id/repoDetailFragment"
         android:name="com.example.githubrepositoriessearch.view.RepoDetailFragment"
         android:label="RepoDetailFragment"
-        tools:layout="@layout/fragment_repo_detail"/>
+        tools:layout="@layout/fragment_repo_detail">
+        <action
+            android:id="@+id/action_repoDetailFragment_to_repoChooseBranchFragment"
+            app:destination="@id/repoChooseBranchFragment" />
+        <action
+            android:id="@+id/action_repoDetailFragment_to_repoCommitFragment"
+            app:destination="@id/repoCommitFragment" />
+        <action
+            android:id="@+id/action_repoDetailFragment_to_repoContentFragment"
+            app:destination="@id/repoContentFragment" />
+    </fragment>
     <fragment
         android:id="@+id/repoSearchFragment"
         android:name="com.example.githubrepositoriessearch.view.RepoSearchFragment"
@@ -18,5 +28,36 @@
         <action
             android:id="@+id/action_repoSearchFragment_to_repoDetailFragment"
             app:destination="@id/repoDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/repoChooseBranchFragment"
+        android:name="com.example.githubrepositoriessearch.view.RepoChooseBranchFragment"
+        android:label="RepoChooseBranchFragment"
+        tools:layout="@layout/fragment_repo_choose_branch">
+        <action
+            android:id="@+id/action_repoChooseBranchFragment_to_repoDetailFragment"
+            app:destination="@id/repoDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/repoCommitFragment"
+        android:name="com.example.githubrepositoriessearch.view.RepoCommitFragment"
+        android:label="RepoCommitFragment"
+        tools:layout="@layout/fragment_repo_commit">
+    </fragment>
+    <fragment
+        android:id="@+id/repoContentFragment"
+        android:name="com.example.githubrepositoriessearch.view.RepoContentFragment"
+        android:label="RepoContentFragment"
+        tools:layout="@layout/fragment_repo_content">
+        <action
+            android:id="@+id/action_repoContentFragment_to_repoFileFragment"
+            app:destination="@id/repoFileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/repoFileFragment"
+        android:name="com.example.githubrepositoriessearch.view.RepoFileFragment"
+        android:label="RepoFileFragment"
+        tools:layout="@layout/fragment_repo_file">
     </fragment>
 </navigation>
