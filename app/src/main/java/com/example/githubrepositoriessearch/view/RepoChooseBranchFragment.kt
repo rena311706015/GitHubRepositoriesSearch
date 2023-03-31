@@ -39,7 +39,7 @@ class RepoChooseBranchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val repoFullName: String? = arguments?.getString("repo")
         binding?.apply {
-            activity?.topAppBar?.title = R.string.choose_branch.toString()
+            activity?.topAppBar?.title = getString(R.string.choose_branch)
             binding?.lifecycleOwner = this.lifecycleOwner
             binding?.viewModel = sharedViewModel
             prepareRecyclerView()

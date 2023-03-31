@@ -38,7 +38,7 @@ class RepoCommitFragment : Fragment() {
         val repoFullName: String? = arguments?.getString("repo")
         val repoCommit: String? = arguments?.getString("branch")
         binding?.apply {
-            activity?.topAppBar?.title = R.string.commits.toString()
+            activity?.topAppBar?.title = getString(R.string.commits)
             binding?.lifecycleOwner = this.lifecycleOwner
             binding?.viewModel = sharedViewModel
             prepareRecyclerView()
@@ -52,18 +52,20 @@ class RepoCommitFragment : Fragment() {
             commitsAdapter.submitList(commitList)
         }
         binding.viewModel?.errorLiveData?.observe(viewLifecycleOwner) {
-            if(it != null && it != errorBody){
+            if (it != null && it != errorBody) {
                 errorBody = it
-                AlertDialog.Builder(context).setMessage(it?.message.plus("\n").plus(it?.documentation_url)).setTitle("Error").setPositiveButton("OK", null).show()
+                AlertDialog.Builder(context)
+                    .setMessage(it?.message.plus("\n").plus(it?.documentation_url))
+                    .setTitle("Error").setPositiveButton("OK", null).show()
             }
         }
     }
 
     private fun prepareRecyclerView() {
-
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         commitList = emptyList()
-
+        commitsAdapter = CommitsAdapter(CommitsAdapter.OnClickListener {
+        })
         binding?.lifecycleOwner = this
         binding?.commits?.layoutManager = layoutManager
         binding?.commits?.adapter = commitsAdapter

@@ -13,17 +13,7 @@ class Repository(
     val owner: User = User(),
     private val updated_at: String = "",
     private val stargazers_count: Int = 0,
-
     val default_branch: String = "",
-
-    val has_issues: Boolean,
-    val has_projects: Boolean,
-    val has_discussions: Boolean,
-    val issues_url: String,
-    val pulls_url: String,
-    val releases_url: String,
-    val contributors_url: String,
-
     ) {
 
     fun getStar(): String {

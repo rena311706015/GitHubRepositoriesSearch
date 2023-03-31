@@ -45,8 +45,7 @@ class RepoContentFragment : Fragment() {
         repoBranch = arguments?.getString("branch").toString()
 
         binding?.apply {
-
-            activity?.topAppBar?.title = R.string.contents.toString()
+            activity?.topAppBar?.title = getString(R.string.contents)
             binding?.lifecycleOwner = this.lifecycleOwner
             binding?.viewModel = sharedViewModel
             prepareRecyclerView()
@@ -63,9 +62,11 @@ class RepoContentFragment : Fragment() {
             contentsAdapter.submitList(contentList)
         }
         binding.viewModel?.errorLiveData?.observe(viewLifecycleOwner) {
-            if(it != null && it != errorBody){
+            if (it != null && it != errorBody) {
                 errorBody = it
-                AlertDialog.Builder(context).setMessage(it?.message.plus("\n").plus(it?.documentation_url)).setTitle("Error").setPositiveButton("OK", null).show()
+                AlertDialog.Builder(context)
+                    .setMessage(it?.message.plus("\n").plus(it?.documentation_url))
+                    .setTitle("Error").setPositiveButton("OK", null).show()
             }
         }
     }
