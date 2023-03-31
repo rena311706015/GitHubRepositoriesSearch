@@ -28,8 +28,8 @@ class Repository(
 
     fun getStar(): String {
         return if (stargazers_count >= 1000) {
-            val df = DecimalFormat("#.#")
-            df.format(stargazers_count / 1000)
+            val df = DecimalFormat("#.#k")
+            df.format(stargazers_count / 1000.0)
         } else {
             stargazers_count.toString()
         }
