@@ -37,25 +37,31 @@ class RepoChooseBranchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val repoFullName: String? = arguments?.getString("repo")
-        binding?.apply {
+//        val repoFullName: String? = arguments?.getString("repo")
+        binding.apply {
             activity?.topAppBar?.title = getString(R.string.choose_branch)
-            binding?.lifecycleOwner = this.lifecycleOwner
-            binding?.viewModel = sharedViewModel
+            binding.lifecycleOwner = this.lifecycleOwner
+            binding.viewModel = sharedViewModel
             prepareRecyclerView()
-            val paths: List<String>? = repoFullName?.split(" ")
-            if (paths != null) {
-                viewModel?.getBranches(paths[0], paths[1])
+            val repo = viewModel?.selectedRepo?.value
+            if(repo != null){
+                viewModel?.getBranches(repo.owner.login, repo.name)
             }
+//            val paths: List<String>? = repoFullName?.split(" ")
+//            if (paths != null) {
+//                viewModel?.getBranches(paths[0], paths[1])
+//            }
         }
         binding.viewModel?.repoBranchListLiveData?.observe(viewLifecycleOwner) { list ->
             branchList = list
             branchesAdapter.submitList(branchList)
         }
         binding.viewModel?.errorLiveData?.observe(viewLifecycleOwner) {
-            if(it != null && it != errorBody){
+            if (it != null && it != errorBody) {
                 errorBody = it
-                AlertDialog.Builder(context).setMessage(it?.message.plus("\n").plus(it?.documentation_url)).setTitle("Error").setPositiveButton("OK", null).show()
+                AlertDialog.Builder(context)
+                    .setMessage(it.message.plus("\n").plus(it.documentation_url))
+                    .setTitle("Error").setPositiveButton("OK", null).show()
             }
         }
     }
@@ -65,13 +71,14 @@ class RepoChooseBranchFragment : Fragment() {
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         branchList = emptyList()
         branchesAdapter = BranchesAdapter(BranchesAdapter.OnClickListener { branch ->
-            val bundle = bundleOf("branch" to branch.name)
+            binding.viewModel?.openItem(branch)
+            val bundle = bundleOf("from" to "chooseBranch")
             view?.findNavController()
                 ?.navigate(R.id.action_repoChooseBranchFragment_to_repoDetailFragment, bundle)
         })
 
-        binding?.lifecycleOwner = this
-        binding?.branches?.layoutManager = layoutManager
-        binding?.branches?.adapter = branchesAdapter
+        binding.lifecycleOwner = this
+        binding.branches?.layoutManager = layoutManager
+        binding.branches?.adapter = branchesAdapter
     }
 }

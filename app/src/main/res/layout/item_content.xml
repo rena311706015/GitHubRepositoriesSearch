@@ -24,7 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:text="@{content.name}"
-            android:textColor="@color/md_theme_light_primary"
             app:layout_constraintStart_toEndOf="@id/content_type"
             app:layout_constraintTop_toTopOf="@id/content_type"
             app:layout_constraintBottom_toBottomOf="@+id/content_type"/>

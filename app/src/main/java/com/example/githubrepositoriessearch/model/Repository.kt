@@ -1,5 +1,7 @@
 package com.example.githubrepositoriessearch.model
 
+import android.content.res.AssetManager
+import android.graphics.Color
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -10,11 +12,13 @@ class Repository(
     val name: String = "",
     val description: String = "",
     val language: String = "",
+    val languageColor : String = "",
     val owner: User = User(),
     private val updated_at: String = "",
     private val stargazers_count: Int = 0,
     val default_branch: String = "",
-    ) {
+    var readme: Readme? = null,
+) {
 
     fun getStar(): String {
         return if (stargazers_count >= 1000) {
@@ -31,4 +35,5 @@ class Repository(
         val date = inputFormat.parse(updated_at)
         return "Updated on " + outputFormat.format(date)
     }
+
 }

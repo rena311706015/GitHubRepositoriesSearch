@@ -1,11 +1,10 @@
 package com.example.githubrepositoriessearch.viewmodel
 
 import android.util.Log
+import android.widget.ImageView
+import androidx.core.graphics.toColorInt
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.bumptech.glide.Glide
 import com.example.githubrepositoriessearch.adapter.Event
 import com.example.githubrepositoriessearch.http.RetrofitInstance
@@ -15,7 +14,7 @@ import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import retrofit2.Response
+import org.json.JSONObject
 
 class MainViewModel : ViewModel() {
     val repoListLiveData = MutableLiveData<List<Repository>>()
@@ -24,11 +23,22 @@ class MainViewModel : ViewModel() {
     val repoBranchListLiveData = MutableLiveData<List<Branch>>()
     val repoCommitListLiveData = MutableLiveData<List<CommitResult>>()
     val repoContentListLiveData = MutableLiveData<List<Content>>()
-    val selected: MutableLiveData<Repository> = MutableLiveData()
-    val openItemEvent: MutableLiveData<Event<Repository>> = MutableLiveData()
+    var selectedRepo: MutableLiveData<Repository> = MutableLiveData()
+    var selectedBranch: MutableLiveData<Branch> = MutableLiveData()
+    var selectedContent: MutableLiveData<Content> = MutableLiveData()
+    private val openRepoEvent: MutableLiveData<Event<Repository>> = MutableLiveData()
+    private val openBranchEvent: MutableLiveData<Event<Branch>> = MutableLiveData()
+    private val openContentEvent: MutableLiveData<Event<Content>> = MutableLiveData()
+
     val errorLiveData: MutableLiveData<ErrorBody?> = MutableLiveData()
-    val moshi = Moshi.Builder().build()
+    private val moshi: Moshi = Moshi.Builder().build()
     private var job: Job? = null
+
+    init {
+        viewModelScope.launch {
+            // Coroutine that will be canceled when the ViewModel is cleared.
+        }
+    }
 
     fun getSearchResult(text: String) {
         job?.cancel()
@@ -37,7 +47,8 @@ class MainViewModel : ViewModel() {
             if (result.isSuccessful) {
                 repoListLiveData.postValue(result.body()?.items)
             } else {
-                result.errorBody()?.string()?.let { errorProcess(it) }
+//                result.errorBody()?.string()?.let { errorProcess(it) }
+                errorLiveData.postValue(result.errorBody()?.string()?.let { errorProcess(it) })
             }
         }
     }
@@ -50,9 +61,10 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch(IO) {
             val result = RetrofitInstance.api.getRepository(owner, repo)
             if (result.isSuccessful) {
+//                selected.postValue(result.body())
                 repoLiveData.postValue(result.body())
             } else {
-                result.errorBody()?.string()?.let { errorProcess(it) }
+                errorLiveData.postValue(result.errorBody()?.string()?.let { errorProcess(it) })
             }
         }
     }
@@ -61,9 +73,15 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch(IO) {
             val result = RetrofitInstance.api.getREADME(owner, repo)
             if (result.isSuccessful) {
+                selectedRepo.value?.readme = result.body()
                 repoReadmeLiveData.postValue(result.body())
             } else {
-                result.errorBody()?.string()?.let { errorProcess(it) }
+                repoReadmeLiveData.postValue(Readme("",""))
+//                if(result.errorBody()?.string()?.let { errorProcess(it) }?.message == "Not Found"){
+//                    repoReadmeLiveData.postValue(Readme("",""))
+//                }else{
+//                    errorLiveData.postValue(result.errorBody()?.string()?.let { errorProcess(it) })
+//                }
             }
         }
     }
@@ -74,7 +92,8 @@ class MainViewModel : ViewModel() {
             if (result.isSuccessful) {
                 repoBranchListLiveData.postValue(result.body())
             } else {
-                result.errorBody()?.string()?.let { errorProcess(it) }
+//                result.errorBody()?.string()?.let { errorProcess(it) }
+                errorLiveData.postValue(result.errorBody()?.string()?.let { errorProcess(it) })
             }
         }
     }
@@ -89,7 +108,8 @@ class MainViewModel : ViewModel() {
             if (result.isSuccessful) {
                 repoCommitListLiveData.postValue(result.body())
             } else {
-                result.errorBody()?.string()?.let { errorProcess(it) }
+//                result.errorBody()?.string()?.let { errorProcess(it) }
+                errorLiveData.postValue(result.errorBody()?.string()?.let { errorProcess(it) })
             }
         }
     }
@@ -104,7 +124,8 @@ class MainViewModel : ViewModel() {
             if (result.isSuccessful) {
                 repoContentListLiveData.postValue(result.body())
             } else {
-                result.errorBody()?.string()?.let { errorProcess(it) }
+//                result.errorBody()?.string()?.let { errorProcess(it) }
+                errorLiveData.postValue(result.errorBody()?.string()?.let { errorProcess(it) })
             }
         }
     }
@@ -114,13 +135,46 @@ class MainViewModel : ViewModel() {
     }
 
     fun openItem(item: Repository) {
-        selected.value = item
-        openItemEvent.value = Event(item)
+        selectedRepo.value = item
+        openRepoEvent.value = Event(item)
     }
 
-    fun errorProcess(errorBody: String) {
-        val fromJson = moshi.adapter(ErrorBody::class.java).fromJson(errorBody ?: "")
-        errorLiveData.postValue(fromJson)
+    fun openItem(item: Branch) {
+        selectedBranch.value = item
+        openBranchEvent.value = Event(item)
+    }
+
+    fun openItem(item: Content) {
+        selectedContent.value = item
+        Log.e("VM",item.path)
+        openContentEvent.value = Event(item)
+    }
+
+    private fun errorProcess(errorBody: String) : ErrorBody?{
+        val fromJson = moshi.adapter(ErrorBody::class.java).fromJson(errorBody)
+        return fromJson
+    }
+}
+
+@BindingAdapter("circleColor")
+fun loadCircleColor(view: ImageView?, lan: String?) {
+    if (!lan.isNullOrEmpty()) {
+        if (view != null) {
+            val jsonString = view.context.assets.open("language_color.json")
+                    .bufferedReader()
+                    .use { it.readText() }
+            val jsonObject = JSONObject(jsonString)
+            val keyIter: Iterator<String> = jsonObject.keys()
+            var key: String
+            var value: String
+            var valueMap = HashMap<String, String>()
+            while (keyIter.hasNext()){
+                key = keyIter.next()
+                value = jsonObject[key] as String
+                valueMap[key] = value
+            }
+            valueMap[lan]?.toColorInt()?.let { view.background.setTint(it) }
+        }
     }
 }
 

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebSettings
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.githubrepositoriessearch.databinding.FragmentRepoFileBinding
@@ -30,12 +29,12 @@ class RepoFileFragment : Fragment() {
         val fileName: String? = arguments?.getString("fileName")
         val fileUrl: String? = arguments?.getString("fileUrl")
 
-        binding?.apply {
+        binding.apply {
             activity?.topAppBar?.title = fileName
-            binding?.lifecycleOwner = this.lifecycleOwner
-            binding?.viewModel = sharedViewModel
+            binding.lifecycleOwner = this.lifecycleOwner
+            binding.viewModel = sharedViewModel
             if (fileUrl != null) {
-                binding?.repoFileRawContent?.loadUrl(fileUrl)
+                binding.repoFileRawContent?.loadUrl(fileUrl)
             }
         }
     }

@@ -5,7 +5,7 @@
     tools:context=".RepoDetailFragment">
 
     <data>
-
+        <import type="android.view.View"/>
         <variable
             name="repo"
             type="com.example.githubrepositoriessearch.model.Repository" />
@@ -103,6 +103,31 @@
                     app:layout_constraintLeft_toRightOf="@id/repo_star"
                     app:layout_constraintTop_toTopOf="@id/repo_star_icon" />
 
+
+                <ImageView
+                    android:id="@+id/repo_language_color"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/circle"
+                    android:visibility="@{repo.language != null ? View.VISIBLE : View.GONE}"
+                    app:circleColor="@{repo.language}"
+                    app:layout_constraintStart_toEndOf="@id/guidelineV5"
+                    app:layout_constraintEnd_toStartOf="@id/repo_language"
+                    app:layout_constraintTop_toTopOf="@id/repo_star_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/repo_star_icon" />
+
+                <TextView
+                    android:id="@+id/repo_language"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@{repo.language}"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@id/repo_language_color"
+                    app:layout_constraintTop_toTopOf="@id/repo_star_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/repo_star_icon"/>
+
                 <com.google.android.material.divider.MaterialDivider
                     android:id="@+id/first_divider"
                     android:layout_width="match_parent"
@@ -173,6 +198,13 @@
                     android:layout_marginHorizontal="5dp"
                     app:layout_constraintTop_toBottomOf="@id/repo_readme_filename"
                     app:layout_constraintLeft_toLeftOf="parent" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineV5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>

@@ -35,28 +35,27 @@ class RepoCommitFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val repoFullName: String? = arguments?.getString("repo")
-        val repoCommit: String? = arguments?.getString("branch")
-        binding?.apply {
+        binding.apply {
             activity?.topAppBar?.title = getString(R.string.commits)
-            binding?.lifecycleOwner = this.lifecycleOwner
-            binding?.viewModel = sharedViewModel
+            binding.lifecycleOwner = this.lifecycleOwner
+            binding.viewModel = sharedViewModel
             prepareRecyclerView()
-            val paths: List<String>? = repoFullName?.split(" ")
-            if (paths != null && repoCommit != null) {
-                viewModel?.getCommits(paths[0], paths[1], repoCommit)
+            val repo = viewModel?.selectedRepo?.value
+            val branch = viewModel?.selectedBranch?.value
+            if(repo != null && branch != null){
+                viewModel?.getCommits(repo.owner.login, repo.name, branch.name)
             }
-        }
-        binding.viewModel?.repoCommitListLiveData?.observe(viewLifecycleOwner) { list ->
-            commitList = list
-            commitsAdapter.submitList(commitList)
-        }
-        binding.viewModel?.errorLiveData?.observe(viewLifecycleOwner) {
-            if (it != null && it != errorBody) {
-                errorBody = it
-                AlertDialog.Builder(context)
-                    .setMessage(it?.message.plus("\n").plus(it?.documentation_url))
-                    .setTitle("Error").setPositiveButton("OK", null).show()
+            viewModel?.repoCommitListLiveData?.observe(viewLifecycleOwner) { list ->
+                commitList = list
+                commitsAdapter.submitList(commitList)
+            }
+            viewModel?.errorLiveData?.observe(viewLifecycleOwner) {
+                if (it != null && it != errorBody) {
+                    errorBody = it
+                    AlertDialog.Builder(context)
+                        .setMessage(it.message.plus("\n").plus(it.documentation_url))
+                        .setTitle("Error").setPositiveButton("OK", null).show()
+                }
             }
         }
     }
@@ -64,10 +63,9 @@ class RepoCommitFragment : Fragment() {
     private fun prepareRecyclerView() {
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         commitList = emptyList()
-        commitsAdapter = CommitsAdapter(CommitsAdapter.OnClickListener {
-        })
-        binding?.lifecycleOwner = this
-        binding?.commits?.layoutManager = layoutManager
-        binding?.commits?.adapter = commitsAdapter
+        commitsAdapter = CommitsAdapter(CommitsAdapter.OnClickListener {})
+        binding.lifecycleOwner = this
+        binding.commits?.layoutManager = layoutManager
+        binding.commits?.adapter = commitsAdapter
     }
 }

@@ -12,13 +12,25 @@
         tools:layout="@layout/fragment_repo_detail">
         <action
             android:id="@+id/action_repoDetailFragment_to_repoChooseBranchFragment"
-            app:destination="@id/repoChooseBranchFragment" />
+            app:destination="@id/repoChooseBranchFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_repoDetailFragment_to_repoCommitFragment"
-            app:destination="@id/repoCommitFragment" />
+            app:destination="@id/repoCommitFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_repoDetailFragment_to_repoContentFragment"
-            app:destination="@id/repoContentFragment" />
+            app:destination="@id/repoContentFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/repoSearchFragment"
@@ -27,7 +39,11 @@
         tools:layout="@layout/fragment_repo_search">
         <action
             android:id="@+id/action_repoSearchFragment_to_repoDetailFragment"
-            app:destination="@id/repoDetailFragment" />
+            app:destination="@id/repoDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/repoChooseBranchFragment"
@@ -36,7 +52,13 @@
         tools:layout="@layout/fragment_repo_choose_branch">
         <action
             android:id="@+id/action_repoChooseBranchFragment_to_repoDetailFragment"
-            app:destination="@id/repoDetailFragment" />
+            app:destination="@id/repoDetailFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpTo="@id/repoDetailFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/repoCommitFragment"
@@ -51,7 +73,11 @@
         tools:layout="@layout/fragment_repo_content">
         <action
             android:id="@+id/action_repoContentFragment_to_repoFileFragment"
-            app:destination="@id/repoFileFragment" />
+            app:destination="@id/repoFileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
     <fragment

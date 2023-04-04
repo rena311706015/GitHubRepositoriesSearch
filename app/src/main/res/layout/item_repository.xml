@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View"/>
         <variable
             name="repository"
             type="com.example.githubrepositoriessearch.model.Repository" />
@@ -42,7 +43,10 @@
                 android:text="@{repository.full_name}"
                 android:textSize="20sp"
                 android:textColor="@color/md_theme_light_primary"
+                android:maxLines="1"
+                android:ellipsize="end"
                 app:layout_constraintStart_toEndOf="@id/repo_owner_avatar"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/repo_owner_avatar"/>
 
             <TextView
@@ -55,6 +59,7 @@
                 android:textSize="20sp"
                 android:maxLines="3"
                 android:ellipsize="end"
+                android:visibility="@{repository.description != null ? View.VISIBLE : View.GONE}"
                 app:layout_constraintStart_toEndOf="@id/repo_owner_avatar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/repo_full_name" />
@@ -63,8 +68,7 @@
                 android:id="@+id/icon_star"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginVertical="10dp"
-                android:layout_marginHorizontal="10dp"
+                android:layout_margin="10dp"
                 android:background="@drawable/round_star"
                 app:layout_constraintStart_toEndOf="@id/repo_owner_avatar"
                 app:layout_constraintTop_toBottomOf="@id/repo_description" />
@@ -79,13 +83,27 @@
                 app:layout_constraintTop_toTopOf="@id/icon_star"
                 app:layout_constraintBottom_toBottomOf="@id/icon_star"/>
 
+            <ImageView
+                android:id="@+id/repo_language_color"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/circle"
+                android:visibility="@{repository.language != null ? View.VISIBLE : View.GONE}"
+                app:circleColor="@{repository.language}"
+                app:layout_constraintStart_toEndOf="@id/guidelineV3"
+                app:layout_constraintEnd_toStartOf="@id/repo_language"
+                app:layout_constraintTop_toTopOf="@id/icon_star"
+                app:layout_constraintBottom_toBottomOf="@id/icon_star" />
+
             <TextView
                 android:id="@+id/repo_language"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:text="@{repository.language}"
                 android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@id/guidelineV3"
+                app:layout_constraintStart_toEndOf="@id/repo_language_color"
                 app:layout_constraintTop_toTopOf="@id/icon_star"
                 app:layout_constraintBottom_toBottomOf="@id/icon_star"/>
 

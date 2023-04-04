@@ -13,7 +13,7 @@ class User(
 ) {
     fun getAgo(): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
-        val time: Long = inputFormat.parse(date).getTime()
+        val time: Long = inputFormat.parse(date).time
         val now = System.currentTimeMillis()
         val ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS)
         return ago.toString()
