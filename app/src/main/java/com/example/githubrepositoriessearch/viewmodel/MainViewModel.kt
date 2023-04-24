@@ -1,5 +1,6 @@
 package com.example.githubrepositoriessearch.viewmodel
 
+import android.app.Application
 import android.util.Log
 import android.widget.ImageView
 import androidx.core.graphics.toColorInt
@@ -16,7 +17,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
-class MainViewModel : ViewModel() {
+var valueMap = HashMap<String, String>()
+class MainViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val context = getApplication<Application>().applicationContext
     val repoListLiveData = MutableLiveData<List<Repository>>()
     val repoLiveData = MutableLiveData<Repository>()
     val repoReadmeLiveData = MutableLiveData<Readme>()
@@ -36,18 +40,30 @@ class MainViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            // Coroutine that will be canceled when the ViewModel is cleared.
+            // 在init時轉換一次就不用在bindingAdapter每次都轉換
+            val jsonString = context.assets.open("language_color.json")
+                .bufferedReader()
+                .use { it.readText() }
+            val jsonObject = JSONObject(jsonString)
+            val keyIter: Iterator<String> = jsonObject.keys()
+            var key: String
+            var value: String
+            while (keyIter.hasNext()){
+                key = keyIter.next()
+                value = jsonObject[key] as String
+                valueMap[key] = value
+            }
         }
     }
 
     fun getSearchResult(text: String) {
+        //使用job，每當有新的request且前一個request還在執行，就會取消掉前一個request
         job?.cancel()
         job = viewModelScope.launch(IO) {
             val result = RetrofitInstance.api.getRepositories(text)
             if (result.isSuccessful) {
                 repoListLiveData.postValue(result.body()?.items)
             } else {
-//                result.errorBody()?.string()?.let { errorProcess(it) }
                 errorLiveData.postValue(result.errorBody()?.string()?.let { errorProcess(it) })
             }
         }
@@ -61,7 +77,6 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch(IO) {
             val result = RetrofitInstance.api.getRepository(owner, repo)
             if (result.isSuccessful) {
-//                selected.postValue(result.body())
                 repoLiveData.postValue(result.body())
             } else {
                 errorLiveData.postValue(result.errorBody()?.string()?.let { errorProcess(it) })
@@ -77,11 +92,6 @@ class MainViewModel : ViewModel() {
                 repoReadmeLiveData.postValue(result.body())
             } else {
                 repoReadmeLiveData.postValue(Readme("",""))
-//                if(result.errorBody()?.string()?.let { errorProcess(it) }?.message == "Not Found"){
-//                    repoReadmeLiveData.postValue(Readme("",""))
-//                }else{
-//                    errorLiveData.postValue(result.errorBody()?.string()?.let { errorProcess(it) })
-//                }
             }
         }
     }
@@ -92,7 +102,6 @@ class MainViewModel : ViewModel() {
             if (result.isSuccessful) {
                 repoBranchListLiveData.postValue(result.body())
             } else {
-//                result.errorBody()?.string()?.let { errorProcess(it) }
                 errorLiveData.postValue(result.errorBody()?.string()?.let { errorProcess(it) })
             }
         }
@@ -108,7 +117,6 @@ class MainViewModel : ViewModel() {
             if (result.isSuccessful) {
                 repoCommitListLiveData.postValue(result.body())
             } else {
-//                result.errorBody()?.string()?.let { errorProcess(it) }
                 errorLiveData.postValue(result.errorBody()?.string()?.let { errorProcess(it) })
             }
         }
@@ -124,7 +132,6 @@ class MainViewModel : ViewModel() {
             if (result.isSuccessful) {
                 repoContentListLiveData.postValue(result.body())
             } else {
-//                result.errorBody()?.string()?.let { errorProcess(it) }
                 errorLiveData.postValue(result.errorBody()?.string()?.let { errorProcess(it) })
             }
         }
@@ -146,7 +153,6 @@ class MainViewModel : ViewModel() {
 
     fun openItem(item: Content) {
         selectedContent.value = item
-        Log.e("VM",item.path)
         openContentEvent.value = Event(item)
     }
 
@@ -156,28 +162,17 @@ class MainViewModel : ViewModel() {
     }
 }
 
+//選擇language顏色
 @BindingAdapter("circleColor")
 fun loadCircleColor(view: ImageView?, lan: String?) {
     if (!lan.isNullOrEmpty()) {
         if (view != null) {
-            val jsonString = view.context.assets.open("language_color.json")
-                    .bufferedReader()
-                    .use { it.readText() }
-            val jsonObject = JSONObject(jsonString)
-            val keyIter: Iterator<String> = jsonObject.keys()
-            var key: String
-            var value: String
-            var valueMap = HashMap<String, String>()
-            while (keyIter.hasNext()){
-                key = keyIter.next()
-                value = jsonObject[key] as String
-                valueMap[key] = value
-            }
             valueMap[lan]?.toColorInt()?.let { view.background.setTint(it) }
         }
     }
 }
 
+//要載入圖片的時候，會用到這邊的adapter去轉換圖片url並顯示為傳入view的圖片
 @BindingAdapter("imageUrl")
 fun loadImage(view: RoundedImageView?, url: String?) {
     if (!url.isNullOrEmpty()) {

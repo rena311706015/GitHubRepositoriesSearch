@@ -34,11 +34,11 @@ class RepoSearchFragment : Fragment() {
 
     private var binding: FragmentRepoSearchBinding? = null
     private val sharedViewModel: MainViewModel by activityViewModels()
+    private var errorBody: ErrorBody = ErrorBody()
+    private var isComeback: Boolean = false
     private lateinit var repoAdapter: RepositoriesAdapter
     private lateinit var repoList: List<Repository>
-    private var errorBody: ErrorBody = ErrorBody()
     private lateinit var alert : AlertDialog
-    private var isComeback: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -47,7 +47,7 @@ class RepoSearchFragment : Fragment() {
         binding = fragmentBinding
         return fragmentBinding.root
     }
-
+    //針對首頁的backPress寫退出app的function
     override fun onAttach(context: Context) {
         super.onAttach(context)
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -77,6 +77,7 @@ class RepoSearchFragment : Fragment() {
             binding?.lifecycleOwner = viewLifecycleOwner
             binding?.viewModel = sharedViewModel
             prepareRecyclerView()
+            //searchEditText內的文字變換就要重新搜尋
             val searchEditText = binding?.searchEditText
             searchEditText?.doOnTextChanged { text, _, _, _ ->
                 if (!text.isNullOrEmpty()) {
@@ -84,6 +85,7 @@ class RepoSearchFragment : Fragment() {
                     binding?.searchProgressIndicator?.show()
                     binding?.repositories?.isVisible = false
                     //always back to the first item after list items update
+                    //isComeback -> 用於判斷是否從其他fragment返回，若是，維持navigate前的位置
                     repoAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
                         override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                             super.onItemRangeInserted(positionStart, itemCount)
@@ -97,6 +99,7 @@ class RepoSearchFragment : Fragment() {
                         if(!isComeback){
                             if (repoList != list && !list.isNullOrEmpty()) {
                                 repoList = list
+                                //submitList會讓diffutil計算list是否有差
                                 repoAdapter.submitList(repoList)
                                 binding?.searchProgressIndicator?.hide()
                                 binding?.repositories?.isVisible = true
@@ -117,7 +120,6 @@ class RepoSearchFragment : Fragment() {
                                 alert.setButton(DialogInterface.BUTTON_POSITIVE, "OK") { _, _ -> }
                                 alert.show()
                             }
-
                             binding?.searchProgressIndicator?.hide()
                         }
                     }
@@ -135,6 +137,8 @@ class RepoSearchFragment : Fragment() {
         repoAdapter = RepositoriesAdapter(RepositoriesAdapter.OnClickListener {
             binding?.repositories?.isVisible = false
             binding?.searchProgressIndicator?.show()
+            //先在這個fragment呼叫getRepository的request，viewmodel的livedata更新後再navigate到下一個頁面
+            //(因為一開始設計時跳轉detail fragment，viewmodel會先observe舊有的repo資料，就會有類似畫面閃爍的問題
             binding?.viewModel?.getRepository(it.owner.login, it.name)
             binding?.viewModel?.repoLiveData?.observe(viewLifecycleOwner) { repo ->
                 binding?.viewModel?.openItem(repo)

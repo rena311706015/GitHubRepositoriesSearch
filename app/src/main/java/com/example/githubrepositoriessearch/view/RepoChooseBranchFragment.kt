@@ -37,7 +37,6 @@ class RepoChooseBranchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val repoFullName: String? = arguments?.getString("repo")
         binding.apply {
             activity?.topAppBar?.title = getString(R.string.choose_branch)
             binding.lifecycleOwner = this.lifecycleOwner
@@ -47,10 +46,6 @@ class RepoChooseBranchFragment : Fragment() {
             if(repo != null){
                 viewModel?.getBranches(repo.owner.login, repo.name)
             }
-//            val paths: List<String>? = repoFullName?.split(" ")
-//            if (paths != null) {
-//                viewModel?.getBranches(paths[0], paths[1])
-//            }
         }
         binding.viewModel?.repoBranchListLiveData?.observe(viewLifecycleOwner) { list ->
             branchList = list
