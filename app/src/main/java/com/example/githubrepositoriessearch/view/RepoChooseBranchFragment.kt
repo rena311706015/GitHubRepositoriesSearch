@@ -43,7 +43,7 @@ class RepoChooseBranchFragment : Fragment() {
             binding.viewModel = sharedViewModel
             prepareRecyclerView()
             val repo = viewModel?.selectedRepo?.value
-            if(repo != null){
+            if (repo != null) {
                 viewModel?.getBranches(repo.owner.login, repo.name)
             }
         }

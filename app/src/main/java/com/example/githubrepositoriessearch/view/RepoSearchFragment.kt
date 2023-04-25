@@ -1,7 +1,6 @@
 package com.example.githubrepositoriessearch.view
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
@@ -9,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -19,7 +17,6 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
-import com.example.githubrepositoriessearch.MainActivity
 import com.example.githubrepositoriessearch.R
 import com.example.githubrepositoriessearch.adapter.RepositoriesAdapter
 import com.example.githubrepositoriessearch.databinding.FragmentRepoSearchBinding
@@ -38,7 +35,7 @@ class RepoSearchFragment : Fragment() {
     private var isComeback: Boolean = false
     private lateinit var repoAdapter: RepositoriesAdapter
     private lateinit var repoList: List<Repository>
-    private lateinit var alert : AlertDialog
+    private lateinit var alert: AlertDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -47,6 +44,7 @@ class RepoSearchFragment : Fragment() {
         binding = fragmentBinding
         return fragmentBinding.root
     }
+
     //針對首頁的backPress寫退出app的function
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -89,14 +87,15 @@ class RepoSearchFragment : Fragment() {
                     repoAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
                         override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                             super.onItemRangeInserted(positionStart, itemCount)
-                            if(!isComeback){
+                            if (!isComeback) {
                                 binding?.repositories?.scrollToPosition(0)
                             }
                         }
                     })
+                    //TODO 每次變動都會送request導致很快就rate limit(可以等使用者0.5秒內沒有變動?)
                     viewModel?.getSearchResult(text.toString())
                     viewModel?.repoListLiveData?.observe(viewLifecycleOwner) { list ->
-                        if(!isComeback){
+                        if (!isComeback) {
                             if (repoList != list && !list.isNullOrEmpty()) {
                                 repoList = list
                                 //submitList會讓diffutil計算list是否有差
@@ -104,14 +103,14 @@ class RepoSearchFragment : Fragment() {
                                 binding?.searchProgressIndicator?.hide()
                                 binding?.repositories?.isVisible = true
                             }
-                        }else{
+                        } else {
                             isComeback = false
                         }
                     }
                     viewModel?.errorLiveData?.observe(viewLifecycleOwner) {
                         if (it != null && it != errorBody) {
                             errorBody = it
-                            if(!::alert.isInitialized){
+                            if (!::alert.isInitialized) {
                                 alert = AlertDialog.Builder(context).create()
                             }
                             if (!alert.isShowing) {
@@ -123,7 +122,7 @@ class RepoSearchFragment : Fragment() {
                             binding?.searchProgressIndicator?.hide()
                         }
                     }
-                }else{
+                } else {
                     binding?.repositories?.isVisible = false
                 }
             }
@@ -137,8 +136,9 @@ class RepoSearchFragment : Fragment() {
         repoAdapter = RepositoriesAdapter(RepositoriesAdapter.OnClickListener {
             binding?.repositories?.isVisible = false
             binding?.searchProgressIndicator?.show()
-            //先在這個fragment呼叫getRepository的request，viewmodel的livedata更新後再navigate到下一個頁面
-            //(因為一開始設計時跳轉detail fragment，viewmodel會先observe舊有的repo資料，就會有類似畫面閃爍的問題
+            //TODO 這部分更好的寫法?
+            //一開始跳轉detail fragment時viewmodel會先observe舊有的repo資料，就會有類似畫面閃爍的問題
+            //目前先在這個fragment呼叫getRepository的request，viewmodel的livedata更新後再navigate到下一個頁面
             binding?.viewModel?.getRepository(it.owner.login, it.name)
             binding?.viewModel?.repoLiveData?.observe(viewLifecycleOwner) { repo ->
                 binding?.viewModel?.openItem(repo)
@@ -159,6 +159,7 @@ class RepoSearchFragment : Fragment() {
         binding?.repositories?.layoutManager = layoutManager
         binding?.repositories?.adapter = repoAdapter
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null

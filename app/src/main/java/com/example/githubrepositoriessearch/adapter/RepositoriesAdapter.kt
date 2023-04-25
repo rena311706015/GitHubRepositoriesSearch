@@ -10,7 +10,7 @@ import com.example.githubrepositoriessearch.databinding.ItemRepositoryBinding
 import com.example.githubrepositoriessearch.model.Repository
 
 //用listAdapter搭配DiffUtil
-//一開始是因為發現資料沒變，但notifyDataSetChange會叫超過一次造成列表閃爍
+//一開始是因為發現livedata只observe一次，但notifyDataSetChange會叫超過一次造成列表閃爍
 class RepositoriesAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<Repository, RecyclerView.ViewHolder>(RepoDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

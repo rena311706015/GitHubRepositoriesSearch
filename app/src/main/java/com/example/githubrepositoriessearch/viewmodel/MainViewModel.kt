@@ -1,7 +1,6 @@
 package com.example.githubrepositoriessearch.viewmodel
 
 import android.app.Application
-import android.util.Log
 import android.widget.ImageView
 import androidx.core.graphics.toColorInt
 import androidx.databinding.BindingAdapter
@@ -18,6 +17,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 var valueMap = HashMap<String, String>()
+
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val context = getApplication<Application>().applicationContext
@@ -48,7 +48,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val keyIter: Iterator<String> = jsonObject.keys()
             var key: String
             var value: String
-            while (keyIter.hasNext()){
+            while (keyIter.hasNext()) {
                 key = keyIter.next()
                 value = jsonObject[key] as String
                 valueMap[key] = value
@@ -91,7 +91,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 selectedRepo.value?.readme = result.body()
                 repoReadmeLiveData.postValue(result.body())
             } else {
-                repoReadmeLiveData.postValue(Readme("",""))
+                repoReadmeLiveData.postValue(Readme("", ""))
             }
         }
     }
@@ -156,7 +156,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         openContentEvent.value = Event(item)
     }
 
-    private fun errorProcess(errorBody: String) : ErrorBody?{
+    private fun errorProcess(errorBody: String): ErrorBody? {
         val fromJson = moshi.adapter(ErrorBody::class.java).fromJson(errorBody)
         return fromJson
     }

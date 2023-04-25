@@ -38,14 +38,13 @@ class RepoContentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding?.apply {
-//            val path = viewModel?.selectedContent?.value?.path
-//            activity?.topAppBar?.title = if (!path.isNullOrEmpty()) path else getString(R.string.contents)
             activity?.topAppBar?.title = getString(R.string.contents)
             binding?.lifecycleOwner = this.lifecycleOwner
             binding?.viewModel = sharedViewModel
             prepareRecyclerView()
-            viewModel?.selectedContent?.observe(viewLifecycleOwner){
-                activity?.topAppBar?.title = if (!it.path.isNullOrEmpty())it.path else getString(R.string.contents)
+            viewModel?.selectedContent?.observe(viewLifecycleOwner) {
+                activity?.topAppBar?.title =
+                    if (!it.path.isNullOrEmpty()) it.path else getString(R.string.contents)
             }
             viewModel?.repoContentListLiveData?.observe(viewLifecycleOwner) { list ->
                 if (list != null) {
@@ -84,11 +83,17 @@ class RepoContentFragment : Fragment() {
         }
         contentsAdapter = ContentsAdapter(ContentsAdapter.OnClickListener { content ->
             binding?.viewModel?.openItem(content)
+            //TODO 開啟多層資料夾後返回會回到detail而非上一層資料夾(可能需要開新的fragment)
             if (content.type == "dir") {
                 val repo = binding?.viewModel?.selectedRepo?.value
                 val branch = binding?.viewModel?.selectedBranch?.value
-                if(repo != null && branch != null){
-                    binding?.viewModel?.getContents(repo.owner.login, repo.name, content.path, branch.name)
+                if (repo != null && branch != null) {
+                    binding?.viewModel?.getContents(
+                        repo.owner.login,
+                        repo.name,
+                        content.path,
+                        branch.name
+                    )
                 }
             } else {
                 val bundle = bundleOf("fileName" to content.name, "fileUrl" to content.download_url)

@@ -42,7 +42,7 @@ class RepoCommitFragment : Fragment() {
             prepareRecyclerView()
             val repo = viewModel?.selectedRepo?.value
             val branch = viewModel?.selectedBranch?.value
-            if(repo != null && branch != null){
+            if (repo != null && branch != null) {
                 viewModel?.getCommits(repo.owner.login, repo.name, branch.name)
             }
             viewModel?.repoCommitListLiveData?.observe(viewLifecycleOwner) { list ->

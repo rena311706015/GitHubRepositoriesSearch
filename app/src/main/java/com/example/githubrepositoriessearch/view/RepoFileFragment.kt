@@ -34,6 +34,7 @@ class RepoFileFragment : Fragment() {
             binding.lifecycleOwner = this.lifecycleOwner
             binding.viewModel = sharedViewModel
             if (fileUrl != null) {
+                //TODO 不知道怎麼在app內瀏覽不同種的檔案所以先用webview顯示rawContent
                 binding.repoFileRawContent?.loadUrl(fileUrl)
             }
         }

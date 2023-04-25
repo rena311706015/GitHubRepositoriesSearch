@@ -1,23 +1,18 @@
 package com.example.githubrepositoriessearch.view
 
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.githubrepositoriessearch.R
 import com.example.githubrepositoriessearch.databinding.FragmentRepoDetailBinding
-import com.example.githubrepositoriessearch.model.Branch
 import com.example.githubrepositoriessearch.model.ErrorBody
 import com.example.githubrepositoriessearch.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -78,16 +73,18 @@ class RepoDetailFragment : Fragment() {
                     activity?.topAppBar?.title = it.name
                     repo = it
                     binding?.repo = it
-                    binding?.btnRepoBranch?.text = if (branch != null) branch.name else it?.default_branch
+                    binding?.btnRepoBranch?.text =
+                        if (branch != null) branch.name else it?.default_branch
                 } else {
                     Log.e("Detail", "isNull")
                 }
             }
-            viewModel?.selectedBranch?.observe(viewLifecycleOwner){branch ->
+            viewModel?.selectedBranch?.observe(viewLifecycleOwner) { branch ->
                 binding?.btnRepoBranch?.text = branch.name
-                if(arguments?.getString("from") == "chooseBranch"){
+                if (arguments?.getString("from") == "chooseBranch") {
                     arguments?.clear()
-                    Snackbar.make(view, "Change branch to ".plus(branch.name), Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(view, "Change branch to ".plus(branch.name), Snackbar.LENGTH_LONG)
+                        .show()
                 }
             }
             viewModel?.repoReadmeLiveData?.observe(viewLifecycleOwner) { readme ->
