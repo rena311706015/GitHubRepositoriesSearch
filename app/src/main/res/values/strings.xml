@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">GitHub Repositories Search</string>
+    <string name="search_hint">請輸入Repository關鍵字...</string>
+    <string name="repo_branch">Branch</string>
+    <string name="repo_browse_code">Browse Code</string>
+    <string name="repo_commits">Commits</string>
+    <string name="repo_pull_requests">Pull Requests</string>
+    <string name="repo_releases">Releases</string>
+    <string name="repo_contributors">Contributors</string>
+    <string name="repo_watchers">Watchers</string>
+    <string name="repo_issues">Issues</string>
+    <string name="repo_projects">Projects</string>
+    <string name="repo_discussions">Discussions</string>
+    <string name="choose_branch">Choose Branch</string>
+    <string name="repo_files">Files</string>
+
+    <string name="toast_notify_branch_changed_message">Change branch to %1$s</string>
+
+
+    <!--dialog-->
+    <string name="dialog_general_error_title">Error</string>
+    <string name="dialog_general_error_message">An error occurred. Please try again later.</string>
+
+    <string name="dialog_network_error_title">Network Error</string>
+    <string name="dialog_network_error_message">Please check your network connection and try again.</string>
+
+    <string name="dialog_reach_limit_title">Rate Limit</string>
+    <string name="dialog_reach_limit_message">The primary rate limit for unauthenticated requests is 10 requests per minute, 60 requests per hour.</string>
+
+    <string name="dialog_exit_title">Exit</string>
+    <string name="dialog_exit_message">Are you sure you want to exit?</string>
+
+    <string name="dialog_yes_button">Yes</string>
+    <string name="dialog_no_button">No</string>
+    <string name="dialog_ok_button">OK</string>
+
+    <string name="no_result_message">No result found.</string>
+    <!--for test-->
+    <string name="test_repo_author_name">rena311706015</string>
+    <string name="test_repo_name">GitHubRepositoriesSearch</string>
+    <string name="test_repo_full_name">rena311706015/GitHubRepositoriesSearch</string>
+    <string name="test_repo_description">a practice</string>
+    <string name="test_repo_star">10.3k</string>
+    <string name="test_repo_language">Kotlin</string>
+    <string name="test_repo_update_date">Updated on May 30, 2024</string>
+    <string name="test_repo_filename">README.md</string>
+    <string name="test_repo_readme"> blah…</string>
+    <string name="test_repo_branch">master</string>
+    <string name="test_repo_commit_message">feat: add new feature</string>
+</resources>

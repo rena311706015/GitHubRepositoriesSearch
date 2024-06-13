@@ -1,0 +1,91 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/md_theme_light_onPrimary"
+    app:cardCornerRadius="15dp"
+    app:cardUseCompatPadding="true"
+    app:rippleColor="@color/md_theme_light_outline"
+    app:strokeColor="@color/md_theme_light_onPrimary">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/owner_avatar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius="10dp"
+            tools:background="@drawable/round_circle" />
+
+        <TextView
+            android:id="@+id/repo_full_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="@color/md_theme_light_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/owner_avatar"
+            app:layout_constraintTop_toTopOf="@id/owner_avatar"
+            tools:text="@string/test_repo_full_name" />
+
+        <TextView
+            android:id="@+id/repo_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/repo_full_name"
+            app:layout_constraintTop_toBottomOf="@id/repo_full_name"
+            tools:text="@string/test_repo_description" />
+
+        <TextView
+            android:id="@+id/repo_star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            app:drawableStartCompat="@drawable/round_star"
+            app:layout_constraintStart_toStartOf="@id/repo_full_name"
+            app:layout_constraintTop_toBottomOf="@id/repo_description"
+            tools:text="@string/test_repo_star" />
+
+        <TextView
+            android:id="@+id/repo_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            app:drawableStartCompat="@drawable/round_circle"
+            app:layout_constraintStart_toEndOf="@id/repo_star"
+            app:layout_constraintTop_toTopOf="@id/repo_star"
+            tools:text="@string/test_repo_language" />
+
+        <TextView
+            android:id="@+id/repo_update_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            app:layout_constraintStart_toStartOf="@id/repo_full_name"
+            app:layout_constraintTop_toBottomOf="@id/repo_star"
+            tools:text="@string/test_repo_update_date" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/repoSearchListFragment">
+
+    <fragment
+        android:id="@+id/repoSearchListFragment"
+        android:name="repositories.search.view.search.RepoSearchListFragment"
+        android:label="RepoSearchListFragment"
+        tools:layout="@layout/fragment_repo_search">
+        <action
+            android:id="@+id/action_repoSearchListFragment_to_repoDetailFragment"
+            app:destination="@id/repoDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/repoBranchListFragment"
+        android:name="repositories.search.view.branch.RepoBranchListFragment"
+        android:label="RepoBranchListFragment"
+        tools:layout="@layout/fragment_repo_branch" />
+    <fragment
+        android:id="@+id/repoCommitListFragment"
+        android:name="repositories.search.view.commit.RepoCommitListFragment"
+        android:label="RepoCommitListFragment"
+        tools:layout="@layout/fragment_repo_commit" />
+    <fragment
+        android:id="@+id/repoFileFragment"
+        android:name="repositories.search.view.file.RepoFileFragment"
+        android:label="RepoFileFragment"
+        tools:layout="@layout/fragment_repo_file" />
+    <fragment
+        android:id="@+id/repoDetailFragment"
+        android:name="repositories.search.view.detail.RepoDetailFragment"
+        android:label="RepoDetailFragment"
+        tools:layout="@layout/fragment_repo_detail">
+        <action
+            android:id="@+id/action_repoDetailFragment_to_repoContentListFragment"
+            app:destination="@id/repoContentListFragment" />
+        <action
+            android:id="@+id/action_repoDetailFragment_to_repoCommitListFragment"
+            app:destination="@id/repoCommitListFragment" />
+        <action
+            android:id="@+id/action_repoDetailFragment_to_repoBranchListFragment"
+            app:destination="@id/repoBranchListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/repoContentListFragment"
+        android:name="repositories.search.view.file.RepoContentListFragment"
+        android:label="RepoContentListFragment"
+        tools:layout="@layout/fragment_repo_content">
+        <action
+            android:id="@+id/action_repoContentListFragment_to_repoFileFragment"
+            app:destination="@id/repoFileFragment" />
+    </fragment>
+</navigation>

@@ -1,0 +1,28 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/md_theme_light_onPrimary"
+    app:cardCornerRadius="8dp"
+    app:cardUseCompatPadding="true"
+    app:rippleColor="@color/md_theme_light_outline"
+    app:strokeColor="@color/md_theme_light_onPrimary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/branch_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/md_theme_light_onPrimary"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            tools:text="@string/test_repo_branch" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

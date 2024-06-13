@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Button.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:padding">8dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:backgroundTint">@color/md_theme_light_onPrimary</item>
+        <item name="cornerRadius">5dp</item>
+        <item name="strokeColor">@color/md_theme_light_secondary</item>
+        <item name="shapeAppearance">?shapeAppearanceSmallComponent</item>
+    </style>
+</resources>
